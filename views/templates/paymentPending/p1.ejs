@@ -1,0 +1,22 @@
+<!-- views/emails/payment-pending.ejs -->
+
+<p>Dear <%= details.ub_first_name %> <%= details.ub_middle_name %> <%= details.ub_last_name %>,</p><br/>
+
+<p style="color:#1c7107;">
+  With reference to our advertisement for the post of <strong><%= details.post %></strong> and your application for the same, you are hereby requested to kindly remit the requisite fee of Rs. <strong><%= details.fee_amount %></strong>/- through NEFT/RTGS/Google Pay/PhonePe as per below details on or before <strong><%= details.last_date %></strong>.
+</p><br/>
+
+<p>
+  <strong>Bank Account Name:</strong> <%= details.bank_account_name %><br/>
+  <strong>Bank Name:</strong> <%= details.bank_name %><br/>
+  <strong>Saving A/c No.:</strong> <%= details.account_number %><br/>
+  <strong>IFSC Code:</strong> <%= details.ifsc_code %>
+</p><br/>
+
+<p><i>Note: This is a system generated email.</i></p>
+
+<p>
+  Thanks & Regards,<br/>
+  HELP MUCBF TEAM<br/>
+  CONTACT NO :: +91-782080844
+</p>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= ht.ca_roll_number %>_<%= ca.ub_first_name %>_<%= ca.ub_middle_name %>_<%= ca.ub_last_name %></title>
+
+  <link rel="stylesheet" href="/assets/css/hallticket/online-hallticket.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script src="/assets/js/hallticket-handler.js"  defer></script>
+
+  <script>
+      const ht = <%- JSON.stringify(ht) %>;
+      const slot = <%- JSON.stringify(slot) %>;
+      window.addEventListener("contextmenu", e => e.preventDefault());
+  </script>
+
+  <style>
+      @media print {
+          @page { border:1px solid #868686; margin:5mm; width:210mm !important; }
+          * {
+            print-color-adjust:exact;
+            user-select:none !important;
+            -webkit-user-select:none !important;
+            -moz-user-select:none !important;
+            -ms-user-select:none !important;
+          }
+          .print-ht-btn { display:none; }
+      }
+      .no-page-break { page-break-inside: avoid; }
+      .page-break-before { page-break-before: always; }
+      .page-break-after { page-break-after: always; }
+  </style>
+</head>
+
+<body>
+  <div id="is-mobile-container" class="d-none">
+    <div class="d-flex justify-content-center align-items-center">
+      <p class="fw-bold fs-5 text-danger text-center mt-5 px-2"
+         style="font-weight:bold;font-size:24px;width:300px;text-align:center;">
+        To ensure an optimal browsing experience, please access the website using a laptop or desktop.
+      </p>
+    </div>
+  </div>
+
+  <div class="container" id="main-container">
+    <button class="print-ht-btn">Print Hallticket</button>
+
+    <div class="hall-ticket">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="title">
+          <img src="<%= p.headerUrl %>" alt="header-image" class="header-image" />
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="main-content">
+
+        <!-- Left -->
+        <div class="left-section">
+          <div class="info-row">
+            <div class="info-item">
+              <p class="label">Seat No. (बैठक क्र.)</p>
+              <p class="value"><%= ht.ca_roll_number %></p>
+            </div>
+            <div class="info-item">
+              <p class="label">Form No. (फॉर्म क्र.)</p>
+              <p class="value"><%= ht.id %></p>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-item">
+              <p class="label">User ID (युजर आय. डी.)</p>
+              <p class="value"><%= ht.ca_roll_number %></p>
+            </div>
+            <div class="info-item">
+              <p class="label">Password (पासवर्ड)</p>
+              <p class="value"><%= ht.birth_pass %></p>
+            </div>
+          </div>
+
+          <div class="candidate-details">
+            <h2>Candidate Details (उमेदवार तपशील)</h2>
+            <div class="details-grid">
+              <div class="detail-item">
+                <p class="label">Full Name (पूर्ण नाव)</p>
+                <p class="value"><%= ca.ub_first_name %> <%= ca.ub_middle_name %> <%= ca.ub_last_name %></p>
+              </div>
+              <div class="detail-item">
+                <p class="label">Gender (लिंग)</p>
+                <p class="value"><%= (ht.ca_gender || '').toUpperCase() %></p>
+              </div>
+              <div class="detail-item">
+                <p class="label">Date of Birth (जन्मतारीख)</p>
+                <p class="value"><%= ht.birth_date %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam-details">
+            <h2>Examination Details (परीक्षेचे तपशील)</h2>
+
+            <div class="exam-box">
+              <div class="exam-item">
+                <p class="label">Post Name (पदाचे नाव)</p>
+                <p class="value"><%= ht.ca_post_name %></p>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column; gap:0;" class="exam-box">
+              <div style="display:flex;width:100%;border-bottom:1px solid #868686;">
+                <div class="exam-item">
+                  <p class="label">Examination Date (परीक्षेची तारीख)</p>
+                  <p class="value"><%= ht.exam_date %></p>
+                </div>
+                <div class="exam-item">
+                  <p class="label">Examination Time (परीक्षेची वेळ)</p>
+                  <p class="value"><%= ht.ca_batch_time %></p>
+                </div>
+              </div>
+
+              <div style="display:flex;width:100%;">
+                <div class="exam-item">
+                  <p class="label">Entry Time (प्रवेश वेळ)</p>
+                  <p class="value"><%= slot.entry_time %></p>
+                </div>
+                <div class="exam-item">
+                  <p class="label">Gate Close Time (गेट बंद होण्याची वेळ)</p>
+                  <p class="value"><%= slot.gate_close_time %></p>
+                </div>
+              </div>
+            </div>
+
+            <h2>Venue Details (परीक्षेचे ठिकाण)</h2>
+            <div class="exam-box">
+              <div class="exam-item full-width">
+                <p class="label">Examination Center (परीक्षा केंद्र)</p>
+                <p class="value"><%= ht.ca_center_name %></p>
+                <p class="address"><%= ht.ca_center_address %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="right-section">
+          <div class="id-container">
+            <div class="photo-signature">
+              <p class="admit-badge">E-Admit Card</p>
+              
+              <% if (htConfig.isShowPhoto) { %>
+              <div class="photo-box">
+                <p class="photo-label">Photograph</p>
+                <div class="photo">
+                  <img src="<%= p.imgBaseURL + ht.ca_photo %>" alt="photo" width="100%" height="100%"/>
+                </div>
+              </div>
+              <% } %> 
+
+              <% if (htConfig.isShowSign) { %>
+              <div class="signature-box">
+                <p class="photo-label">Signature</p>
+                <div class="signature">
+                  <img src="<%= p.imgBaseURL + ht.ca_sign %>" alt="sign" width="100%" height="100%" />
+                </div>
+              </div>
+              <% } %>
+
+              <% if(htConfig.isShowQR) { %> 
+              <div class="qr-code-box">
+                <p class="photo-label">QR Code</p>
+                <div id="qr-code" class="qr-code"></div>
+              </div>
+              <% } %> 
+
+              <% if( htConfig.isShowPastePhoto){%>
+              <div class="paste-photo">
+                <p class="paste-photo-box">Please affix your recent color photo & sign across it.</p>
+              </div>
+              <%}%>
+            </div> <!-- .photo-signature -->
+          </div> <!-- .id-container -->
+        </div> <!-- .right-section -->
+
+      </div> <!-- end .main-content -->
+
+      <!-- Signatures -->
+      <div class="signatures">
+        <div class="signature-box">
+          <p class="label">Candidate Signature</p>
+          <div class="signature-line"></div>
+          <p class="label">To be signed infront of invigilator only.</p>
+          <p class="label">फक्त पर्यवेक्षकांसमोर स्वाक्षरी करावी.</p>
+        </div>
+        <div class="signature-box">
+          <p class="label">Invigilator Signature</p>
+          <div class="signature-line"></div>
+        </div>
+      </div>
+
+      <!-- Exam details (box) - kept as in pug -->
+      <div class="exam-details-new">
+        <h2>Examination Details (परीक्षेचे तपशील)</h2>
+        <div class="exam-boxes">
+          <div class="exam-box">
+            <i class="fas fa-calendar"></i>
+            <div>
+              <p class="label">Examination Date</p>
+              <p class="value">27/10/2024</p>
+              <p class="time">11:00 AM to 12:30 PM</p>
+            </div>
+          </div>
+          <div class="exam-box">
+            <i class="fas fa-clock"></i>
+            <div>
+              <p class="label">Reporting Time</p>
+              <p class="value">08:00 AM</p>
+              <p class="gate-close">Gate Closes at 10:30 AM</p>
+            </div>
+          </div>
+          <div class="exam-box">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <p class="label">Exam Center</p>
+              <p class="value">VIDHYABHARATI MAHAVIDYALAY</p>
+              <p class="address">AMRAVATI, CAMP ROAD, AMRAVATI (MAIN BUILDING), 444602</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aadhaar section (mirror pug logic) -->
+      <% if (htConfig.isShowAdhaar)  { %>
+      <div class="aadhaar-section page-break-before">
+        <h2><i class="fas fa-id-card"></i> Aadhaar Card Details</h2>
+
+        <div class="aadhaar-container">
+          <div class="aadhaar-water-mark">
+            <% for (let i=0; i<150; i++) { %>
+              <span><%= ca.ub_first_name %> <%= ca.ub_middle_name %> <%= ca.ub_last_name %></span>
+              <span>FOR EXAMINATION PURPOSE ONLY</span>
+              <span><%= ht.exam_date %> <%= ht.ca_batch_time %></span>
+            <% } %>
+          </div>
+
+          <div class="aadhaar-image">
+            <img src="<%= p.imgBaseURL + ht.ca_aadhar_card %>" alt="Aadhaar" class="aadhaar-image " />
+          </div>
+
+          <div class="aadhaar-details">
+            <div class="aadhaar-item">
+              <p class="label">Aadhaar Number</p>
+              <p class="value"><%= ca.ub_aadhar_number %></p>
+            </div>
+            <div class="aadhaar-item">
+              <p class="label">-</p>
+              <p class="value">Supervisor Check Stamp</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+      <!-- Instructions: Marathi + English (keeps both blocks as in pug) -->
+      <div class="instructions-new page-break-before">
+        <h2><i class="fas fa-info-circle"></i> Important Instructions (महत्वाच्या सूचना)</h2>
+
+        <div class="instructions-box">
+          <ol>
+            <% rulesList.forEach(rule => { %>
+              <li>
+                <p><%= rule.rules.english %></p>
+                <p><%= rule.rules.marathi %></p>
+              </li>
+            <% }) %>
+          </ol>
+        </div>
+      </div> <!-- .instructions-new -->
+
+    </div> <!-- .hall-ticket -->
+  </div> <!-- .container -->
+
+  <script>
+    document.querySelector(".print-ht-btn").onclick = () => window.print();
+  </script>
+</body>
+</html>

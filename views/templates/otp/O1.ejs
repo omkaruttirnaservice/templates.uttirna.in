@@ -1,0 +1,35 @@
+<div style="font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; padding: 20px; color: #333;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    
+    <h2 style="color: #4E6688; margin-top: 0; text-align: center;">OTP Verification 🔐</h2>
+
+    <p style="font-size: 15px;">
+      Dear <strong><%= details.first_name %> <%= details.middle_name %> <%= details.last_name %></strong>,
+    </p>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      We have received a request to recover your <strong><%= details.type %></strong> for 
+      <strong>YDCC Form Filling</strong>.
+    </p>
+
+    <div style="background: #f1f3f5; padding: 20px; border-radius: 6px; margin: 20px 0; text-align: center;">
+      <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 15px;">Your One-Time Password (OTP)</p>
+      <p style="font-size: 24px; font-weight: bold; color: #2c3e50; letter-spacing: 6px; margin: 10px 0;">
+        <%= details.otp %>
+      </p>
+      <p style="margin: 0; font-size: 14px; color: #555;">Valid for <strong>10 minutes</strong></p>
+    </div>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      Please use this OTP to verify your identity and recover your <strong><%= details.type %></strong>.
+      If you did not request this, kindly ignore the email or contact our support team at  
+      <a href="mailto:<%= config.from %>" style="color: #007bff; text-decoration: none;"><%= config.from %></a>.
+    </p>
+
+    <p style="margin-top: 30px; font-size: 15px;">
+      Best regards,<br>
+      <strong><%= config.regards %></strong>
+    </p>
+
+  </div>
+</div>

@@ -1,0 +1,28 @@
+// controllers/hallticketController.js
+const { isDevEnv } = require("../env");
+
+exports.getHallticket = (req, res) => {
+  let htDetails;
+
+  if (isDevEnv()) {
+    htDetails = require("../data/hallticket_debug.js").htDetails;
+      console.log("Hallticket Details:", htDetails);
+
+    console.log("✅ DEV mode: Using local hallticket_debug.js 1 data");
+  } else {
+    htDetails = req.body.payload;
+    console.log("🚀 PROD mode: Using data from payload");
+  }
+
+
+  res.render("templates/ht/t1", {
+    ht: htDetails.ht,
+    ca: htDetails.ca,
+    slot: htDetails.slot,
+    s3BucketUrl: htDetails.s3BucketUrl,
+    rulesList: htDetails.rulesList,
+    p: htDetails.p,
+    htConfig: htDetails.htConfig  ,
+    
+  });
+};

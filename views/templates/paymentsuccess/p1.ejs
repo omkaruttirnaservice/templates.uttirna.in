@@ -1,0 +1,35 @@
+<div style="font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; padding: 20px; color: #333;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    
+    <h2 style="color: #4E6688; margin-top: 0; text-align: center;">Payment Successful ✅</h2>
+
+    <p style="font-size: 15px;">
+      Dear <strong><%= details.first_name %> <%= details.middle_name %> <%= details.last_name %></strong>,
+    </p>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      We are pleased to inform you that your payment has been successfully processed for the  
+      <strong>YDCC Form Filling</strong>.
+    </p>
+
+    <div style="background: #f1f3f5; padding: 20px; border-radius: 6px; margin: 20px 0;">
+      <p style="margin: 0 0 12px 0; font-weight: bold; font-size: 15px;">Transaction Details:</p>
+      <p style="margin: 6px 0;"><strong>Payment Amount:</strong> ₹<%= details.amount %></p>
+      <p style="margin: 6px 0;"><strong>Post Name:</strong> <%= details.post_name %></p>
+      <p style="margin: 6px 0;"><strong>User ID:</strong> <%= details.r_id %></p>
+      <p style="margin: 6px 0;"><strong>Application No:</strong> <%= details.f_id %></p>
+      <p style="margin: 6px 0;"><strong>Payment Date:</strong> <%= details.payment_date %> (<%= details.payment_time %>)</p>
+      <p style="margin: 6px 0;"><strong>Transaction ID:</strong> <%= details.transaction_id %></p>
+    </div>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      Please log in to your account to download the application form.
+    </p>
+
+    <p style="margin-top: 30px; font-size: 15px;">
+      Best regards,<br>
+      <strong><%= config.regards %></strong>
+    </p>
+
+  </div>
+</div>

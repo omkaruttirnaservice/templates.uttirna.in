@@ -1,0 +1,29 @@
+<div style="font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; padding: 20px; color: #333;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    
+    <h2 style="color: #4E6688; margin-top: 0; text-align: center;">Halltickets Are Now Live</h2>
+
+    <p style="font-size: 15px;">
+      Dear <strong><%= details.first_name %> <%= details.middle_name %> <%= details.last_name %></strong>,
+    </p>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      We are pleased to inform you that the <strong>halltickets for the upcoming YDCC examination</strong> are now available on the website.
+    </p>
+
+    <p style="margin: 0; font-size: 15px; line-height: 1.6;">
+      Please visit the official website to download your hallticket and review all examination details, including date, time, and venue.
+    </p>
+
+    <p style="font-size: 15px; line-height: 1.6;">
+      If you have any questions or need assistance, please reach out to our support team at 
+      <a href="mailto:<%= config.support_email %>" style="color: #007bff; text-decoration: none;"><%= config.support_email %></a>.
+    </p>
+
+    <p style="margin-top: 30px; font-size: 15px;">
+      Best regards,<br>
+      <strong><%= config.regards %></strong>
+    </p>
+
+  </div>
+</div>
