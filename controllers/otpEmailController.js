@@ -1,4 +1,4 @@
-const { isDevEnv } = require("../env.js");
+const { isDevEnv } = require("../utility.js");
 
 exports.getOtpEmail = (req, res) => {
   let data;

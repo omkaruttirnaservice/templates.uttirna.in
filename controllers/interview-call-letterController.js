@@ -1,5 +1,5 @@
 // controllers/interviewCallLetterController.js
-const { isDevEnv } = require("../env");
+const { isDevEnv } = require("../utility.js");
 
 exports.getInterviewCallLetter = (req, res) => {
   let letterData;
