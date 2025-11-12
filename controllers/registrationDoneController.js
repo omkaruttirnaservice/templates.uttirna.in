@@ -17,8 +17,18 @@ exports.getRegistrationEmail = (req, res) => {
   }
 
   // Render EJS template
-  res.render("templates/registrationDone/r1", {
-    details: emailData.details,     // Name & credentials
-    s3BucketUrl: emailData.s3BucketUrl, // optional (if needed)
-  });
+  if (isDevEnv()) {
+    res.render("templates/registrationDone/r1", {
+      details: emailData.details,     // Name & credentials
+      s3BucketUrl: emailData.s3BucketUrl, // optional (if needed)
+    });
+  } else {
+    res.render("templates/registrationDone/r1", {
+      details: emailData.details,     // Name & credentials
+      s3BucketUrl: emailData.s3BucketUrl, // optional (if needed)
+    }, (err, html) => {
+      return res.status(200).send(html);
+    });
+    // res.render(page, object, cb)
+  }
 };

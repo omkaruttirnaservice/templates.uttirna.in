@@ -17,9 +17,20 @@ exports.getInterviewCallLetter = (req, res) => {
 
   // Render the EJS template — adjust the path to match your file inside /views
   // Example: views/l1.ejs or views/templates/il/l1.ejs
-  res.render("templates/il/l1", {
-    config: letterData.config,
-    details: letterData.details,
-    s3BucketUrl: letterData.s3BucketUrl,
-  });
+  if (isDevEnv()) {
+    res.render("templates/il/l1", {
+      config: letterData.config,
+      details: letterData.details,
+      s3BucketUrl: letterData.s3BucketUrl,
+    });
+  } else {
+    res.render("templates/il/l1", {
+      config: letterData.config,
+      details: letterData.details,
+      s3BucketUrl: letterData.s3BucketUrl,
+    }, (err, html) => {
+      return res.status(200).send(html);
+    });
+    // res.render(page, object, cb)
+  }
 };

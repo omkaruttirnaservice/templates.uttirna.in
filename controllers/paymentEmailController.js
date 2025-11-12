@@ -12,7 +12,16 @@ exports.getRegistrationEmail = (req, res) => {
     console.log("🚀 PROD mode: Using data from payload");
   }
 
-  res.render("templates/paymentPending/p1", {
-    details: paymentData, // ✅ matches EJS
-  });
+  if (isDevEnv()) {
+    res.render("templates/paymentPending/p1", {
+      details: paymentData, // ✅ matches EJS
+    });
+  } else {
+    res.render("templates/paymentPending/p1", {
+      details: paymentData, // ✅ matches EJS
+    }, (err, html) => {
+      return res.status(200).send(html);
+    });
+    // res.render(page, object, cb)
+  }
 };
