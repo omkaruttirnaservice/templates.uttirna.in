@@ -5,5 +5,6 @@ const router = express.Router();
 const { getInterviewCallLetter } = require("../controllers/interview-call-letterController");
 
 router.get("/il/l1",  getInterviewCallLetter);
+router.post("/il/l1",  getInterviewCallLetter);
 
 module.exports = router;
