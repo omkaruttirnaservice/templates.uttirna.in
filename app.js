@@ -46,11 +46,18 @@ app.use("/api/template", regSuccessRoute);
 const paymentSuccessRoute = require("./routes/paymentSuccessRoute");
 app.use("/api/template", paymentSuccessRoute);
 
+
+const applicationPrintRoute = require("./routes/applicationPrintRoute");
+app.use("/api/template", applicationPrintRoute);
+
+
 const summaryRoute = require("./routes/summaryRoute");
 app.use("/api/template", summaryRoute);
 
 const hallticketLiveRoute = require("./routes/hallticketLiveRoute");
 app.use("/api/template", hallticketLiveRoute);
+
+
 
 app.get('/api/health', (_, res)=>{
   return res.status(200).send("server is up and running...")

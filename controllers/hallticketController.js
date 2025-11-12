@@ -14,15 +14,29 @@ exports.getHallticket = (req, res) => {
     console.log("🚀 PROD mode: Using data from payload");
   }
 
-
-  res.render("templates/ht/t1", {
-    ht: htDetails.ht,
-    ca: htDetails.ca,
-    slot: htDetails.slot,
-    s3BucketUrl: htDetails.s3BucketUrl,
-    rulesList: htDetails.rulesList,
-    p: htDetails.p,
-    htConfig: htDetails.htConfig  ,
-    
-  });
+  if (isDevEnv()) {
+    res.render("templates/ht/t1", {
+      ht: htDetails.ht,
+      ca: htDetails.ca,
+      slot: htDetails.slot,
+      s3BucketUrl: htDetails.s3BucketUrl,
+      rulesList: htDetails.rulesList,
+      p: htDetails.p,
+      htConfig: htDetails.htConfig  ,
+      
+    });
+  } else {
+    res.render("templates/ht/t1", {
+      ht: htDetails.ht,
+      ca: htDetails.ca,
+      slot: htDetails.slot,
+      s3BucketUrl: htDetails.s3BucketUrl,
+      rulesList: htDetails.rulesList,
+      p: htDetails.p,
+      htConfig: htDetails.htConfig  ,
+    }, (err, html) => {
+      return res.status(200).send(html);
+    });
+    // res.render(page, object, cb)
+  }
 };

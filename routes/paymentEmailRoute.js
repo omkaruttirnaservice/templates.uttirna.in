@@ -4,5 +4,6 @@ const router = express.Router();
 const { getRegistrationEmail } = require("../controllers/paymentEmailController.js");
 
 router.get("/paymentPending/p1", getRegistrationEmail);
+router.post("/paymentPending/p1", getRegistrationEmail);
 
 module.exports = router;

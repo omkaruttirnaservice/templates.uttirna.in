@@ -15,8 +15,18 @@ exports.getCandidateGuidelinesEmail = (req, res) => {
   }
 
   // Render EJS
-  res.render("templates/candidate-guidelines/c1", {
-    details: letterData.details,
-    config: letterData.config,
-  });
+  if (isDevEnv()) {
+    res.render("templates/candidate-guidelines/c1", {
+      details: letterData.details,
+      config: letterData.config,
+    });
+  } else {
+    res.render("templates/candidate-guidelines/c1", {
+      details: letterData.details,
+      config: letterData.config,
+    }, (err, html) => {
+      return res.status(200).send(html);
+    });
+    // res.render(page, object, cb)
+  }
 };

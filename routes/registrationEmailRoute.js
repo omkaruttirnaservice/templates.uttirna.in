@@ -4,5 +4,6 @@ const { getRegistrationEmail } = require("../controllers/registrationDoneControl
 
 
 router.get("/registrationDone/r1", getRegistrationEmail);
+router.post("/registrationDone/r1", getRegistrationEmail);
 
 module.exports = router;
