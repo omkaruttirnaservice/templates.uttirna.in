@@ -1,5 +1,5 @@
 // controllers/hallticketController.js
-const { isDevEnv } = require("../env");
+const { isDevEnv } = require("../utility.js");
 
 exports.getHallticket = (req, res) => {
   let htDetails;

@@ -1,5 +1,5 @@
 // controllers/paymentEmailController.js
-const { isDevEnv } = require("../env.js");
+const { isDevEnv } = require("../utility.js");
 
 exports.getRegistrationEmail = (req, res) => {
   let paymentData;

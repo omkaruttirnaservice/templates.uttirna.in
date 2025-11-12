@@ -52,6 +52,9 @@ app.use("/api/template", summaryRoute);
 const hallticketLiveRoute = require("./routes/hallticketLiveRoute");
 app.use("/api/template", hallticketLiveRoute);
 
+app.get('/api/health', (_, res)=>{
+  return res.status(200).send("server is up and running...")
+})
 
 
 // Start server

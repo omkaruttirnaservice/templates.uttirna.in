@@ -1,5 +1,5 @@
 // controllers/candidateGuidelinesEmailController.js
-const { isDevEnv } = require("../env");
+const { isDevEnv } = require("../utility.js");
 
 exports.getCandidateGuidelinesEmail = (req, res) => {
   let letterData;
