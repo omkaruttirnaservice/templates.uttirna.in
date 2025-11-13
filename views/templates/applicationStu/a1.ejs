@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Print</title>
+
+  <!-- ✅ Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- ✅ Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin-left: 5mm !important;
+        margin-right: 5mm !important;
+        border: 1px solid black;
+      }
+      body {
+        -webkit-print-color-adjust: exact;
+      }
+      .button-hide { display: none; }
+      .container { margin: 0; }
+      .table-bordered th, .table-bordered td, .table thead th { border: 0.5px solid black !important; }
+      .table th > .table td, .table td > .table td, .table td > .table th { border-bottom: 0px !important; }
+      .table tbody td .table-bordered.table thead .table-bordered, 
+      .table-bordered .text-color-alter, 
+      .text-color-alter .h3 {
+        background-color: gray !important;
+        color: white !important;
+        print-color-adjust: exact;
+      }
+      thead { display: table-header-group; }
+      .page-break { page-break-inside: avoid; }
+      .header-container, .nav-bar { display: none; }
+      table { border-collapse: collapse !important; }
+      .print-full-width { width: 100vw; position: relative; }
+      .print-hide { display: none; }
+    }
+
+    header, .header-container, .nav-bar { display: none; }
+
+    .print-full-width {
+      position: relative;
+      width: 297mm;
+      margin-inline: auto;
+      border: 1px solid rgba(0,0,0,.5);
+      padding: 1.2rem;
+    }
+
+    .footer { border: 0.5px solid gray; }
+    .table-bordered th, .table-bordered td, .table thead th { border: 0.5px solid black; }
+
+    .text-color-alter .h3, .text-color-alter {
+      background-color: gray !important;
+      color: white !important;
+      print-color-adjust: exact;
+    }
+
+    small, span { background-color: inherit; }
+
+    table { border-collapse: collapse !important; }
+
+    .section-heading {
+      font-weight: 500;
+      font-size: 15px;
+      background-color: #f0f0f0;
+      padding: 0.3rem 0 0 0 !important;
+    }
+
+    td {
+      font-size: 13px;
+      padding: 0.2rem !important;
+    }
+
+    th {
+      font-size: 13px;
+      padding: 0rem !important;
+      font-weight: 500;
+    }
+
+    .candidate-photo-sign-container {
+      position: absolute;
+      right: 4rem;
+      top: 12rem;
+      z-index: 999 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="print-hide my-3">
+      <button class="btn btn-success ml-2 mt-2 btn-sm" onclick="window.print();">Print Application</button>
+    </div>
+  <div>
+    <div class="print-full-width">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+           <div style="width:40rem; height:6rem; margin:auto;">
+          <img src="<%= s3BucketUrl %>/brand-name.jpg" alt="Header" class="header-image" />
+        </div>
+        </div>
+
+        <div class="col-12">
+          <p class="text-end input-label">Printed On :: <%= todaysDate %></p>
+
+          <div class="candidate-photo-sign-container">
+            <img src="<%= p.imgBaseURL + preview_data.photo %>" alt="candidate-photo" style="border:1px solid gray; width:100px; height:100px;">
+            <img src="<%= p.imgBaseURL + preview_data.sign %>" alt="candidate-sign" style="border:1px solid gray; width:100px; height:80px;">
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-bordered">
+                <tbody>
+                  <!-- General Details -->
+                  <tr><td class="section-heading" colspan="2">General Details (अर्जदार तपशील)</td></tr>
+                  <tr><td>Application Id (अर्ज क्र.)</td><td><%= preview_data.application_id %></td></tr>
+                  <tr><td>Aadhaar Number (आधार क्र.)</td><td><%= preview_data.aadhaar %></td></tr>
+                  <% if (preview_data.pan_number) { %>
+                    <tr><td>PAN Card (पॅन क्र.)</td><td><%= preview_data.pan_number %></td></tr>
+                  <% } %>
+                  <tr><td>Full Name (संपूर्ण नाव)</td><td><%= preview_data.full_name %></td></tr>
+                  <tr><td>Bank Name (बँक नाव)</td><td><%= preview_data.ca_detailsMainPost %></td></tr>
+                  <tr><td>Post (पोस्ट नाव)</td><td><%= preview_data.post_name %></td></tr>
+
+                  <!-- Fee Details -->
+                  <tr><td class="section-heading" colspan="2">Fee Details (शुल्क तपशील)</td></tr>
+                  <% const _payment = preview_data.pi_payment; const _gstCharges = preview_data.pi_tax_payment; %>
+                  <tr><td>Application Charges (अर्ज शुल्क)</td><td>₹ <%= _payment %></td></tr>
+                  <tr><td>GST <%= preview_data.pi_tax_per %>%</td><td>₹ <%= _gstCharges %></td></tr>
+                  <tr><td>Total Amount</td><td>₹ <%= _payment + _gstCharges %></td></tr>
+
+                  <!-- Personal Details -->
+                  <tr><td class="section-heading" colspan="3">Personal Details (वैयक्तिक तपशील)</td></tr>
+                  <tr><td>Date Of Birth (जन्मतारीख)</td><td colspan="2"><%= preview_data.date_of_birth %></td></tr>
+                  <tr><td>Gender (लिंग)</td><td colspan="2"><%= preview_data.gender %></td></tr>
+                  <tr><td>Caste (कास्ट)</td><td colspan="2"><%= preview_data.catagory %></td></tr>
+                  <tr><td>Sub Category (सब कास्ट)</td><td colspan="2"><%= preview_data.detailsSubCategory %></td></tr>
+                  <tr><td>Religion (धर्म)</td><td colspan="2"><%= preview_data.detailsReligion %></td></tr>
+                  <tr><td>Nationality / Citizenship Indian?</td><td colspan="2"><%= preview_data.detailsNationality %></td></tr>
+                  <tr><td>Maharashtra Domiciled?</td><td colspan="2"><%= preview_data.detailsDomicile %></td></tr>
+                  <tr><td>Non Creamy Layer</td><td colspan="2"><%= preview_data.detailsNonCreamyLayer == "1" ? 'Yes' : 'No' %></td></tr>
+                  <tr><td>Marital Status</td><td colspan="2"><%= preview_data.marital %></td></tr>
+                  <tr><td>Father's/Husband's Name</td><td colspan="2"><%= preview_data.father_name %></td></tr>
+                  <tr><td>Mother's Name</td><td colspan="2"><%= preview_data.mother_name %></td></tr>
+                  <tr><td>Spouse Name</td><td colspan="2"><%= preview_data.spouse_name %></td></tr>
+                  <tr><td>Address Line 1</td><td colspan="2"><%= preview_data.address %></td></tr>
+                  <tr><td>Address Line 2</td><td colspan="2"><%= preview_data.line_two || '-' %></td></tr>
+                  <tr><td>Address Line 3</td><td colspan="2"><%= preview_data.line_three || '-' %></td></tr>
+                  <tr><td>Taluka</td><td colspan="2"><%= preview_data.taluka.toUpperCase() %></td></tr>
+                  <tr><td>District</td><td colspan="2"><%= preview_data.dist || '-' %></td></tr>
+                  <tr><td>State</td><td colspan="2"><%= preview_data.state || '-' %></td></tr>
+                  <tr><td>Pin Code</td><td colspan="2"><%= preview_data.pin_number || '-' %></td></tr>
+
+                  <!-- Contact Details -->
+                  <tr><td class="section-heading" colspan="3">Contact Details (संपर्क तपशील)</td></tr>
+                  <tr><td>Mobile Number</td><td colspan="2"><%= preview_data.mobile_name %></td></tr>
+                  <tr><td>Alternative Number</td><td colspan="2"><%= preview_data.alternative_number || '-' %></td></tr>
+                  <tr><td>Email ID</td><td colspan="2"><%= preview_data.email_id %></td></tr>
+                </tbody>
+              </table>
+
+              <!-- Payment Section -->
+              <% if (preview_data.payment_mode === "ONLINE") { %>
+                <table class="table table-bordered mt-4">
+                  <thead>
+                    <tr><th colspan="4">Dear Candidate,<br/>Thank you for payment refer details of this transaction</th></tr>
+                    <tr><th colspan="4" class="mt-2">Payment Receipt (Online Payment)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th>Process Name</th><td><%= p.name %></td></tr>
+                    <tr><th>Post Name</th><td><%= preview_data.post_name %></td></tr>
+                    <tr><th>Payment Status</th><td><%= preview_data.payment_status == 1 ? 'DONE' : 'PENDING' %></td></tr>
+                    <tr><th>Amount Paid</th><td>₹ <%= preview_data.payment_amount %> /-</td></tr>
+                    <tr><th>Transaction No.</th><td><%= preview_data.merch_transaction_id %></td></tr>
+                    <tr><th>Transaction Date</th><td><%= preview_data.payment_done_date %></td></tr>
+                    <tr><th>Payment Message</th><td><%= preview_data.payment_message %></td></tr>
+                  </tbody>
+                </table>
+              <% } else if (preview_data.payment_mode === "OFFLINE") { %>
+                <table class="table table-bordered mt-4">
+                  <thead>
+                    <tr><th colspan="4">Dear Candidate,<br/>Thank you for payment refer details of this transaction</th></tr>
+                    <tr><th colspan="4" class="mt-2">Payment Receipt (Offline Payment)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th>Process Name</th><td><%= p.name %></td></tr>
+                    <tr><th>Post Name</th><td><%= preview_data.post_name %></td></tr>
+                    <tr><th>Payment Status</th><td><%= preview_data.payment_status == 1 ? 'DONE' : 'PENDING' %></td></tr>
+                    <tr><th>Amount Paid</th><td>₹ <%= preview_data.payment_amount %> /-</td></tr>
+                    <tr><th>Transaction No.</th><td><%= preview_data.merch_transaction_id %></td></tr>
+                    <tr><th>Transaction Date</th><td><%= preview_data.payment_done_date %></td></tr>
+                    <tr><th>Payment Message</th><td><%= preview_data.payment_message %></td></tr>
+                  </tbody>
+                </table>
+              <% } %>
+
+              <hr />
+
+              <div class="text-center">
+                <button class="button-hide btn btn-success mt-2" onclick="window.print();">Print Application</button>
+                <p class="input-label mt-2">
+                  Kindly Note<br>
+                  You will also receive an SMS / Email notification with regards to your application.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
