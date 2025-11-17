@@ -1,5 +1,6 @@
 // data/applicationPrintDebug.js
 exports.applicationPrint = {
+ 
   title: "Application Print",
   regIDInt: 100002,
   regIDString: "",
@@ -128,6 +129,7 @@ exports.applicationPrint = {
     p_desc: "ydcc_bank_sept_2025",
     help_mobile_number: "7770048519",
     help_email_id: "help@ydccbank.com",
+    headerUrl:"https://ydccbank.com/assets/images/ydcc_image.jpg",
     imgBaseURL: "https://ydccbank.com/assets/images/ydcc_bank_sept_2025/users/",
   },
   todaysDate: "12-11-2025",

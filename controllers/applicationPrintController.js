@@ -33,7 +33,8 @@ exports.getApplicationPrint = (req, res) => {
     if (isDevEnv()) {
       res.render("templates/applicationStu/a1", {
         preview_data: data.preview_data,
-        p: data.p,
+         p: data.p,  
+
         todaysDate: data.todaysDate,
         s3BucketUrl: data.s3BucketUrl,
       });
@@ -42,7 +43,8 @@ exports.getApplicationPrint = (req, res) => {
         "templates/applicationStu/a1",
         {
           preview_data: data.preview_data,
-          p: data.p,
+          p: pObj,
+          headerUrl: data.p.headerUrl,
           todaysDate: data.todaysDate,
           s3BucketUrl: data.s3BucketUrl,
         },
@@ -59,4 +61,6 @@ exports.getApplicationPrint = (req, res) => {
     console.error("💥 Error in getApplicationPrint:", error);
     res.status(500).send("Internal Server Error: " + (error.message || ""));
   }
+  
+
 };
